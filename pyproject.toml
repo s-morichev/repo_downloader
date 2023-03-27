@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "repo-downloader"
+version = "0.1.0"
+description = ""
+authors = ["Sergey Morichev <s.morichev@yandex.ru>"]
+readme = "README.md"
+packages = [{include = "repo_downloader"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
