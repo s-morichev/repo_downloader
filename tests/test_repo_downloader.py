@@ -50,7 +50,7 @@ async def test_get_html(gitea_loader: RepoDownloader):
 
 
 @pytest.mark.asyncio()
-async def test_download_file(gitea_loader):
+async def test_download_file(gitea_loader: RepoDownloader):
     mock = ClientSession
     mock.get = MagicMock()
     mock.get.return_value.__aenter__.return_value.read.return_value = (
@@ -67,18 +67,21 @@ async def test_download_file(gitea_loader):
         )
 
 
-@pytest.mark.asyncio()
-async def test_load_root_folder(gitea_loader):
-    def raise_if_not_txt(url: str, *args, **kwargs):
-        if url.endswith('.txt'):
-            return DEFAULT
-        raise ClientResponseError(None, (None,))
+def _raise_if_url_is_not_for_txt(
+    url: str, filepath: str, session: ClientSession,
+) -> type(DEFAULT):
+    if url.endswith('.txt'):
+        return DEFAULT
+    raise ClientResponseError(None, (None,))
 
+
+@pytest.mark.asyncio()
+async def test_load_root_folder(gitea_loader: RepoDownloader):
     with patch.object(gitea_loader, '_get_html') as mock_get_html:
         with patch.object(
             gitea_loader,
             '_download_file',
-            side_effect=raise_if_not_txt,
+            side_effect=_raise_if_url_is_not_for_txt,
         ) as mock_download:
             async with ClientSession() as session:
                 await gitea_loader._load_folder('url', '', session)
