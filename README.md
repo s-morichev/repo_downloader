@@ -23,4 +23,28 @@ wemake-python-styleguide. Конфигурация nitpick - https://gitea.radiu
 3. Скачиваем файлы
 4. Рекурсивно скачиваем файлы из подпапок
 
+### Запуск
 
+- `git clone git@github.com:s-morichev/repo_downloader.git`
+- `cd repo_downloader`
+- `poetry install`
+- `poetry run python ./src/main.py`
+
+В консоль будут выведены хеши и названия файлов. Файлы сохраняются во временную
+папку, которая будет удалена при завершении работы скрипта.
+
+Запуск тестов
+- `poetry run coverage run -m pytest .`
+- `poetry run coverage report`
+
+Тестов немного, не выполняется тестирование на ошибки, неправильные входные
+данные, отсутствие соединения и тому подобное.
+
+Запуск линтера
+- `poetry run flake8 .`
+
+### Удаление
+
+- `poetry env remove --all`
+- `cd ..`
+- `rm -rf ./repo_downloader`
